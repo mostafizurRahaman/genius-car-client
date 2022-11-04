@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import loginImg from "../../assets/images/login/login.svg";
 import { AuthContext } from "./../../Context/AuthProvider/AuthProvider";
-import {  FaGithubAlt, FaGoogle } from "react-icons/fa";
+import { FaGithubAlt, FaGoogle } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 const Login = () => {
-   const { LogIn,  GoogleSignIn, LogOut } = useContext(AuthContext);
+   const { LogIn, GoogleSignIn, LogOut } = useContext(AuthContext);
    const location = useLocation();
    const from = location.state?.from?.pathname || "/";
    const navigate = useNavigate();
@@ -20,22 +20,22 @@ const Login = () => {
             const user = res.user;
             console.log(user);
             const currentUser = {
-               email : user.email, 
-            }
-            fetch('http://localhost:5000/jwt', {
-               method: 'POST', 
+               email: user.email,
+            };
+            fetch("https://genius-car-srever.vercel.app/jwt", {
+               method: "POST",
                headers: {
-                  'Content-Type': 'application/json',
-               }, 
-               body: JSON.stringify(currentUser)
+                  "Content-Type": "application/json",
+               },
+               body: JSON.stringify(currentUser),
             })
-            .then(res => res.json())
-            .then(data => {
-               toast.success("You successfully login. ")
-               localStorage.setItem('genius-token', data.token); 
-               navigate(from, {replace: true }); 
-            })
-            .catch(err => console.log(err));
+               .then((res) => res.json())
+               .then((data) => {
+                  toast.success("You successfully login. ");
+                  localStorage.setItem("genius-token", data.token);
+                  navigate(from, { replace: true });
+               })
+               .catch((err) => console.log(err));
          })
          .catch((err) => console.log(err));
    };

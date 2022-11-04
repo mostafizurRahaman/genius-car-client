@@ -5,7 +5,7 @@ import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
 import Orders from "../../Pages/Orders/Orders";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
-import Register from './../../Pages/Register/Register';
+import Register from "./../../Pages/Register/Register";
 
 const Routes = createBrowserRouter([
    {
@@ -21,26 +21,33 @@ const Routes = createBrowserRouter([
             element: <Home></Home>,
          },
          {
-            path: '/login', 
-            element: <Login></Login>
-         }, 
+            path: "/login",
+            element: <Login></Login>,
+         },
          {
-            path: '/register', 
-            element: <Register></Register>
-         }, 
+            path: "/register",
+            element: <Register></Register>,
+         },
          {
-            path: '/checkout/:id', 
-            element: <PrivateRoute>
+            path: "/checkout/:id",
+            element: (
+               <PrivateRoute>
                   <CheckOut></CheckOut>
-            </PrivateRoute>, 
-            loader: async({params}) => fetch(`http://localhost:5000/services/${params.id}`)
-         }, 
+               </PrivateRoute>
+            ),
+            loader: async ({ params }) =>
+               fetch(
+                  `https://genius-car-srever.vercel.app/services/${params.id}`
+               ),
+         },
          {
-            path: '/orders', 
-            element: <PrivateRoute> 
-                <Orders></Orders>
-            </PrivateRoute>
-         }
+            path: "/orders",
+            element: (
+               <PrivateRoute>
+                  <Orders></Orders>
+               </PrivateRoute>
+            ),
+         },
       ],
    },
 ]);

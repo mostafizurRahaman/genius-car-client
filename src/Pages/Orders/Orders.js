@@ -5,19 +5,23 @@ import OrderRow from "../OrdeRow/OrderRow";
 import { AuthContext } from "./../../Context/AuthProvider/AuthProvider";
 
 const Orders = () => {
-   const { user , LogOut } = useContext(AuthContext);
+   const { user, LogOut } = useContext(AuthContext);
    const [orders, setOrders] = useState([]);
    useEffect(() => {
-      fetch(`http://localhost:5000/orders?email=${user?.email}`, {
-         headers: {
-            authorization: `Bearer ${localStorage.getItem('genius-token')}`
+      fetch(
+         `https://genius-car-srever.vercel.app/orders?email=${user?.email}`,
+         {
+            headers: {
+               authorization: `Bearer ${localStorage.getItem("genius-token")}`,
+            },
          }
-      })
+      )
          .then((res) => {
-            if(res.status === 401 || res.status === 403){
-               LogOut()
+            if (res.status === 401 || res.status === 403) {
+               LogOut();
             }
-           return   res.json()})
+            return res.json();
+         })
          .then((data) => {
             setOrders(data);
             // console.log(data);
@@ -27,11 +31,11 @@ const Orders = () => {
    const handleDelete = (order) => {
       const confirm = window.confirm("Are your sure ?? ");
       if (confirm) {
-         fetch(`http://localhost:5000/orders/${order._id}`, {
+         fetch(`https://genius-car-srever.vercel.app/orders/${order._id}`, {
             method: "DELETE",
             headers: {
-               authorization : `Bearer ${localStorage.getItem('genius-token')}`,
-            }
+               authorization: `Bearer ${localStorage.getItem("genius-token")}`,
+            },
          })
             .then((res) => res.json())
             .then((data) => {
@@ -48,26 +52,26 @@ const Orders = () => {
    };
 
    const handleApprove = (id) => {
-      fetch(`http://localhost:5000/orders/${id}`, {
-         method: 'PATCH', 
+      fetch(`https://genius-car-srever.vercel.app/orders/${id}`, {
+         method: "PATCH",
          headers: {
-            'content-type' : 'application/json', 
-            authorization: `Bearer ${localStorage.getItem('genius-token')}`,
-         }, 
-         body: JSON.stringify({status: 'Approved'}),
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("genius-token")}`,
+         },
+         body: JSON.stringify({ status: "Approved" }),
       })
-      .then(res => res.json())
-      .then(data => {
-         console.log(data);
-         if(data.modifiedCount > 0){
-            const remaining = orders.filter(o => o._id !== id); 
-            const approved = orders.find(o => o._id === id); 
-            approved.status = 'Approve';
-            setOrders([approved, ...remaining]);
-         }
-      })
-      .catch(err=> console.log(err)); 
-   }
+         .then((res) => res.json())
+         .then((data) => {
+            console.log(data);
+            if (data.modifiedCount > 0) {
+               const remaining = orders.filter((o) => o._id !== id);
+               const approved = orders.find((o) => o._id === id);
+               approved.status = "Approve";
+               setOrders([approved, ...remaining]);
+            }
+         })
+         .catch((err) => console.log(err));
+   };
    return (
       <div>
          <h2 className="text-center text-4xl font-semibold capitalize  my-3 text-orange-500 ">
@@ -94,7 +98,7 @@ const Orders = () => {
                         key={order._id}
                         order={order}
                         handleDelete={handleDelete}
-                        handleApprove ={handleApprove}
+                        handleApprove={handleApprove}
                      ></OrderRow>
                   ))}
                </tbody>

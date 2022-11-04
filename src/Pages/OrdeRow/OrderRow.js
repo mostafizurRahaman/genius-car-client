@@ -1,12 +1,20 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-
-const OrderRow = ({ order, handleDelete, handleApprove}) => {
-   const {_id,  serviceName, phone, price, email, customerName, service_id, status} = order;
+const OrderRow = ({ order, handleDelete, handleApprove }) => {
+   const {
+      _id,
+      serviceName,
+      phone,
+      price,
+      email,
+      customerName,
+      service_id,
+      status,
+   } = order;
    const [orderedService, setOrderService] = useState({});
    // console.log(orderedService);
-   useEffect(() => {   
-      fetch(`http://localhost:5000/services/${service_id}`)
+   useEffect(() => {
+      fetch(`https://genius-car-srever.vercel.app/services/${service_id}`)
          .then((res) => res.json())
          .then((data) => {
             setOrderService(data);
@@ -14,12 +22,14 @@ const OrderRow = ({ order, handleDelete, handleApprove}) => {
          .catch((err) => console.log(err));
    }, [service_id]);
 
-  
    return (
       <tr>
          <th>
             <label>
-               <button className="btn btn-circle btn-outline" onClick={ ()=> handleDelete(order) }>
+               <button
+                  className="btn btn-circle btn-outline"
+                  onClick={() => handleDelete(order)}
+               >
                   <svg
                      xmlns="http://www.w3.org/2000/svg"
                      className="h-6 w-6"
@@ -59,7 +69,14 @@ const OrderRow = ({ order, handleDelete, handleApprove}) => {
          </td>
          <td>{email}</td>
          <th>
-         <button onClick={()=> handleApprove(_id)} className={`btn btn-ghost btn-xs ${status ? "bg-green-600" : "bg-red-500 "}`}>{status ? status : 'pending' } </button>
+            <button
+               onClick={() => handleApprove(_id)}
+               className={`btn btn-ghost btn-xs ${
+                  status ? "bg-green-600" : "bg-red-500 "
+               }`}
+            >
+               {status ? status : "pending"}{" "}
+            </button>
          </th>
       </tr>
    );
